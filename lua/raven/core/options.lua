@@ -79,15 +79,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
 })
 
-local function close_other_buffers()
-	local current_buf = vim.api.nvim_get_current_buf()
-	local buffers = vim.api.nvim_list_bufs()
+-- local function close_other_buffers()
+-- 	local current_buf = vim.api.nvim_get_current_buf()
+-- 	local buffers = vim.api.nvim_list_bufs()
+--
+-- 	for _, buf in ipairs(buffers) do
+-- 		if buf ~= current_buf and vim.api.nvim_buf_is_loaded(buf) then
+-- 			vim.api.nvim_buf_delete(buf, { force = false })
+-- 		end
+-- 	end
+-- end
 
-	for _, buf in ipairs(buffers) do
-		if buf ~= current_buf and vim.api.nvim_buf_is_loaded(buf) then
-			vim.api.nvim_buf_delete(buf, { force = false })
-		end
-	end
-end
-
-vim.api.nvim_create_user_command("BCO", close_other_buffers, { desc = "Close other buffers" })
+-- vim.api.nvim_create_user_command("BCO", close_other_buffers, { desc = "Close other buffers" })

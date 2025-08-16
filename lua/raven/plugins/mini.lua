@@ -1,20 +1,7 @@
 return {
-
 	"echasnovski/mini.nvim",
 	config = function()
 		require("mini.ai").setup({ n_lines = 500 })
-
-		require("mini.surround").setup({
-			mappings = {
-				add = "ms", -- Add surrounding in Normal and Visual modes
-				delete = "md", -- Delete surrounding
-				find = "ml", -- Find surrounding (to the right)
-				find_left = "mh", -- Find surrounding (to the left)
-				highlight = "mm", -- Highlight surrounding
-				replace = "mr", -- Replace surrounding
-				update_n_lines = "mn", -- Update `n_lines`
-			},
-		})
 
 		require("mini.tabline").setup({
 			show_icons = false,
@@ -30,20 +17,19 @@ return {
 			end,
 		})
 
-		require("mini.diff").setup({})
+		require("mini.diff").setup({
+			view = {
+				style = "sign",
+			},
+		})
+
+		require("mini.git").setup({})
 
 		require("mini.icons").setup()
 
 		require("mini.pairs").setup()
 
-		-- require("mini.git").setup()
-
 		require("mini.files").setup()
-
-		local map = vim.keymap
-		map.set("n", "<leader>e", function()
-			require("mini.files").open()
-		end, { desc = "Find files" })
 
 		local MiniStatusline = require("mini.statusline")
 		require("mini.statusline").setup({
@@ -117,5 +103,10 @@ return {
 				end,
 			},
 		})
+
+		local map = vim.keymap
+		map.set("n", "<leader>e", function()
+			require("mini.files").open()
+		end, { desc = "Find files" })
 	end,
 }

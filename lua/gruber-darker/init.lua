@@ -247,8 +247,6 @@ function M.load()
 	highlight("Underlined", { underline = true }, config)
 	highlight("Ignore", { fg = colors.bg }, config)
 	highlight("Error", { fg = colors.error }, config)
-	highlight("Todo", { fg = colors.yellow, bold = true }, config)
-	highlight("NoneText", { fg = colors.fg_dark }, config)
 	highlight("Whitespace", { fg = colors.bg_light }, config)
 
 	-- Treesitter highlights
@@ -356,9 +354,16 @@ function M.load()
 
 	-- Mini.StatusLine
 	highlight("MiniStatuslineFilename", { fg = colors.fg }, config)
-	highlight("MiniStatuslineModeNormal", { bg = colors.yellow, fg = colors.bg, bold = true }, config)
+	highlight("MiniStatuslineModeNormal", { bg = colors.bg_lighter, fg = colors.fg, bold = true }, config)
 	highlight("MiniStatuslineModeVisual", { bg = colors.purple, fg = colors.bg, bold = true }, config)
 	highlight("MiniStatuslineModeCommand", { bg = colors.purple, fg = colors.bg, bold = true }, config)
+
+	-- Fzf
+	highlight("FZF_FG", { fg = colors.fg_dark }, config)
+	highlight("FZF_HL_PLUS", { fg = colors.yellow }, config)
+	highlight("FZF_HL", { fg = colors.yellow }, config)
+	highlight("FZF_PROMPT", { fg = colors.green_dark }, config)
+	highlight("FZF_HEADER", { fg = colors.green_dark }, config)
 end
 
 -- Convenience function for vim.cmd.colorscheme()

@@ -14,10 +14,10 @@ return {
 		input = { enabled = false },
 		picker = { enabled = false },
 		notifier = { enabled = false },
-		quickfile = { enabled = false },
+		quickfile = { enabled = true },
 		scope = { enabled = false },
-		scroll = { enabled = false },
-		statuscolumn = { enabled = false },
+		scroll = { enabled = true },
+		statuscolumn = { enabled = true },
 		words = { enabled = false },
 	},
 }

@@ -13,9 +13,6 @@ keymap.set({ "n", "v", "o" }, "0", "<nop>", { desc = "Disabled" })
 keymap.set({ "n", "v", "o" }, "gl", "$", { desc = "Goto line end" })
 keymap.set({ "n", "v", "o" }, "$", "<nop>", { desc = "Disabled" })
 
-keymap.set({ "n", "v", "o" }, "ge", "G", { desc = "Goto last line" })
-keymap.set({ "n", "v", "o" }, "G", "<nop>", { desc = "Disabled" })
-
 keymap.set("n", "n", "nzzzv", { desc = "Next search result (centered)" })
 keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
 

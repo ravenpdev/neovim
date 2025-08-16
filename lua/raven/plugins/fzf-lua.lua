@@ -4,22 +4,20 @@ return {
 	opts = {},
 	config = function()
 		require("fzf-lua").setup({
-			-- winopts = {
-			-- 	border = "none",
-			-- 	preview = {
-			-- 		border = "none",
-			-- 	},
-			-- },
+			winopts = {
+				border = "none",
+				preview = {
+					border = "none",
+				},
+			},
 			fzf_colors = {
 				true, -- inherit fzf colors that aren't specified below from
 				-- the auto-generated theme similar to `fzf_colors=true`
-				["fg"] = { "fg", "NoneText" },
-				["hl"] = { "fg", "Keyword" },
-				["hl+"] = { "fg", "Keyword" },
-				-- ["fg+"] = { "fg", "Keyword" },
-				-- ["bg+"] = { "bg", { "CursorLine", "Normal" } },
-				["prompt"] = { "fg", "String" },
-				["header"] = { "fg", "String" },
+				["fg"] = { "fg", "FZF_FG" },
+				["hl"] = { "fg", "FZF_HL" },
+				["hl+"] = { "fg", "FZF_HL_PLUS" },
+				["prompt"] = { "fg", "FZF_PROMPT" },
+				["header"] = { "fg", "FZF_HEADER" },
 			},
 			fzf_opts = {
 				["--padding"] = "1,2,1,2", -- Additional internal padding if needed

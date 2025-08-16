@@ -2,33 +2,33 @@ return {
 	"stevearc/conform.nvim",
 	event = { "BufWritePre" },
 	cmd = { "ConformInfo" },
-	keys = {
-		{
-			"<leader>cf",
-			function()
-				require("conform").format({ async = true }, function(err, did_edit)
-					if not err and did_edit then
-						vim.notify("Code formatted", vim.log.levels.INFO, { title = "Conform" })
-					end
-				end)
-			end,
-			mode = { "n", "v" },
-			desc = "Format buffer",
-		},
-	},
+	-- keys = {
+	-- 	{
+	-- 		"<leader>cf",
+	-- 		function()
+	-- 			require("conform").format({ async = true }, function(err, did_edit)
+	-- 				if not err and did_edit then
+	-- 					vim.notify("Code formatted", vim.log.levels.INFO, { title = "Conform" })
+	-- 				end
+	-- 			end)
+	-- 		end,
+	-- 		mode = { "n", "v" },
+	-- 		desc = "Format buffer",
+	-- 	},
+	-- },
 	opts = {
 		formatters_by_ft = {
 			-- Go
-			go = { "goimports", "gofmt" },
+			-- go = { "goimports", "gofmt" },
 
 			-- Lua
 			lua = { "stylua" },
 
 			-- Web technologies
-			javascript = { "biome" },
-			typescript = { "biome" },
-			javascriptreact = { "biome" },
-			typescriptreact = { "biome" },
+			javascript = { "prettier" },
+			typescript = { "prettier" },
+			javascriptreact = { "prettier" },
+			typescriptreact = { "prettier" },
 
 			svelte = { "prettier" },
 			json = { "prettier" },
@@ -43,7 +43,7 @@ return {
 			-- python = { "isort", "black" },
 
 			-- PHP/Laravel
-			php = { "pint" },
+			-- php = { "pint" },
 
 			-- ruby = { "rubocop" },
 
@@ -52,7 +52,7 @@ return {
 			-- bash = { "shfmt" },
 
 			-- Other (system tools)
-			rust = { "rustfmt" }, -- comes with Rust installation
+			-- rust = { "rustfmt" }, -- comes with Rust installation
 
 			-- elixir = { "mix" },
 			-- eex = { "mix" },
