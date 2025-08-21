@@ -57,6 +57,10 @@ vim.opt.splitkeep = "screen"
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.inccommand = "split"
+vim.opt.fillchars:append({
+	vert = "╏", -- Thicker vertical bar
+	horiz = "━", -- Thicker horizontal bar
+})
 
 local augroup = vim.api.nvim_create_augroup("UserConfig", {})
 

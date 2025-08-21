@@ -3,28 +3,6 @@ return {
 	config = function()
 		require("mini.ai").setup({ n_lines = 500 })
 
-		require("mini.tabline").setup({
-			show_icons = false,
-			format = function(buf_id)
-				local name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf_id), ":t")
-				if name == "" then
-					name = "[No Name]"
-				end
-				if vim.bo[buf_id].modified then
-					name = name .. " +"
-				end
-				return " " .. name .. " "
-			end,
-		})
-
-		require("mini.diff").setup({
-			view = {
-				style = "sign",
-			},
-		})
-
-		require("mini.git").setup({})
-
 		require("mini.icons").setup()
 
 		require("mini.pairs").setup()
