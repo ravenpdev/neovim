@@ -7,7 +7,7 @@ return {
 
 		require("mini.pairs").setup()
 
-		require("mini.files").setup()
+		-- require("mini.files").setup()
 
 		local MiniStatusline = require("mini.statusline")
 		require("mini.statusline").setup({
@@ -73,18 +73,18 @@ return {
 						"%<",
 						{ hl = "MiniStatuslineFilename", strings = { filename } },
 						"%=",
-						{ hl = "MiniStatuslineDevinfo", strings = { git } },
+						{ hl = "MiniStatuslineFilename", strings = { git } },
 						"%=",
-						{ hl = "MiniStatuslineFileinfo", strings = { diagnostics } },
-						{ hl = "MiniStatuslineFileinfo", strings = { fileinfo, search, location } },
+						{ hl = "MiniStatuslineFilename", strings = { diagnostics } },
+						{ hl = "MiniStatuslineFilename", strings = { fileinfo, search, location } },
 					})
 				end,
 			},
 		})
 
-		local map = vim.keymap
-		map.set("n", "<leader>e", function()
-			require("mini.files").open()
-		end, { desc = "Find files" })
+		-- local map = vim.keymap
+		-- map.set("n", "<leader>e", function()
+		-- 	require("mini.files").open()
+		-- end, { desc = "Open Explorer" })
 	end,
 }

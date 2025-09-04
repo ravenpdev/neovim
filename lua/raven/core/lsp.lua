@@ -1,55 +1,23 @@
--- vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
--- 	config = config or {}
--- 	config.border = "none"
--- 	config.focusable = true
--- 	config.max_height = 40
--- 	config.wrap = true
---
--- 	if not (result and result.contents) then
--- 		vim.notify("No hover information available", vim.log.levels.INFO)
--- 		return
--- 	end
---
--- 	-- Extract contents from the LSP response
--- 	local contents = vim.lsp.util._get_contents(result.contents, ctx, config)
---
--- 	-- Calculate width based on content
--- 	local max_line_length = 0
--- 	if type(contents) == "table" then
--- 		for _, line in ipairs(contents) do
--- 			max_line_length = math.max(max_line_length, vim.fn.strdisplaywidth(line or ""))
--- 		end
--- 	elseif type(contents) == "string" then
--- 		for line in contents:gmatch("[^\n]*") do
--- 			max_line_length = math.max(max_line_length, vim.fn.strdisplaywidth(line or ""))
--- 		end
--- 	end
--- 	config.width = math.min(math.max(max_line_length + 4, 20), 80)
---
--- 	-- Add padding to contents
--- 	if type(contents) == "table" then
--- 		local padded_contents = { " " }
--- 		for _, line in ipairs(contents) do
--- 			table.insert(padded_contents, "  " .. line .. "  ")
--- 		end
--- 		table.insert(padded_contents, " ")
--- 		contents = padded_contents
--- 	elseif type(contents) == "string" then
--- 		local lines = vim.split(contents, "\n", { trimempty = true })
--- 		local padded_contents = { " " }
--- 		for _, line in ipairs(lines) do
--- 			table.insert(padded_contents, "  " .. line .. "  ")
--- 		end
--- 		table.insert(padded_contents, " ")
--- 		contents = padded_contents
--- 	end
---
--- 	-- Determine syntax (usually markdown for hover)
--- 	local syntax = "markdown"
---
--- 	-- Call open_floating_preview directly
--- 	return vim.lsp.util.open_floating_preview(contents, syntax, config)
--- end
+vim.lsp.config("emmet_language_server", {
+	filetypes = {
+		"astro",
+		"css",
+		"eruby",
+		"heex",
+		"html",
+		"htmlangular",
+		"htmldjango",
+		"javascriptreact",
+		"less",
+		"pug",
+		"sass",
+		"scss",
+		"svelte",
+		"templ",
+		"typescriptreact",
+		"vue",
+	},
+})
 
 -- local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 --
@@ -57,7 +25,6 @@
 -- 	opts = opts or {}
 -- 	opts.border = "none"
 -- 	opts.focusable = true
--- 	opts.max_height = 40
 -- 	opts.wrap = true
 --
 -- 	-- Calculate appropriate width based on content

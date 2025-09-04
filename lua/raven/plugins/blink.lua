@@ -27,9 +27,6 @@ return {
 		-- See :h blink-cmp-config-keymap for defining your own keymap
 		keymap = {
 			preset = "default",
-			["<S-Tab>"] = { "select_prev", "fallback" },
-			["<Tab>"] = { "select_next", "fallback" },
-			["<CR>"] = { "accept", "fallback" },
 		},
 
 		appearance = {
@@ -58,15 +55,16 @@ return {
 		-- Default list of enabled providers defined so that you can extend it
 		-- elsewhere in your config, without redefining it, due to `opts_extend`
 		sources = {
-			default = { "lsp", "lazydev", "snippets", "path", "buffer" },
-			providers = {
-				lazydev = {
-					name = "LazyDev",
-					module = "lazydev.integrations.blink",
-					-- Make lazydev completions top priority (see `:h blink.cmp`)
-					score_offset = 100,
-				},
-			},
+			-- default = { "lsp", "lazydev", "snippets", "path", "buffer" },
+			default = { "lsp", "snippets", "path", "buffer" },
+			-- providers = {
+			-- 	lazydev = {
+			-- 		name = "LazyDev",
+			-- 		module = "lazydev.integrations.blink",
+			-- 		-- Make lazydev completions top priority (see `:h blink.cmp`)
+			-- 		score_offset = 100,
+			-- 	},
+			-- },
 		},
 
 		-- (Default) Rust fuzzy matcher for typo resistance and significantly better performance

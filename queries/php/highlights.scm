@@ -1,4 +1,4 @@
 ; inherits: php
 
-(program
-  (php_tag) @php_tag)
+; (program
+;   (php_tag) @php_tag)

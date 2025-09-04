@@ -58,7 +58,7 @@ local function get_colors(opts)
 		-- UI colors
 		cursor = "#ffdd33",
 		visual = "#484848",
-		search = "#ffdd33",
+		search = "#9e95c7",
 		line_number = "#484848",
 		line_number_current = "#ffdd33",
 		statusline = opts.styles.sidebars == "transparent" and "NONE" or "#282828",
