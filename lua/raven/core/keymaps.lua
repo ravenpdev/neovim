@@ -4,6 +4,8 @@ local keymap = vim.keymap
 
 keymap.set("n", "<leader>nh", ":noh<CR>", { desc = "Clear search highlighting" })
 
+keymap.set({ "n", "v", "o" }, "ge", "G", { desc = "Goto last line" })
+
 keymap.set({ "n", "v", "o" }, "gs", "^", { desc = "Goto first non-blank in line" })
 keymap.set({ "n", "v", "o" }, "^", "<nop>", { desc = "Disabled" })
 

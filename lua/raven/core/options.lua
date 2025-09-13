@@ -5,7 +5,7 @@ vim.g.lazyvim_prettier_needs_config = true
 -- Basic settings
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.cursorline = true
+-- vim.opt.cursorline = true
 vim.opt.wrap = true
 vim.opt.showbreak = "↪ "
 vim.opt.scrolloff = 8
@@ -58,7 +58,7 @@ vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.inccommand = "split"
 vim.opt.fillchars:append({
-	vert = "╏", -- Thicker vertical bar
+	vert = "┊", -- Thicker vertical bar
 	horiz = "━", -- Thicker horizontal bar
 })
 

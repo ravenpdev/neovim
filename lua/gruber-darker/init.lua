@@ -1,374 +1,437 @@
+-- gruber-darker.nvim - A Neovim port of the Gruber Darker theme
+-- Originally by Alexey Kutepov (rexim) and Jason R. Blevins for Emacs
+-- Modified version of https://github.com/logannday/gruber-darker-nvim
+
 local M = {}
 
--- Default configuration
-local default_config = {
-	bold = true,
-	italic = {
-		strings = false,
-		comments = false,
-		operators = false,
-		folds = false,
-	},
-	underline = true,
-	undercurl = true,
-	underdashed = true,
-	transparent = false,
-	inverse = true,
-	dim_inactive = false,
-	styles = {
-		sidebars = "dark", -- style for sidebars: "dark", "transparent"
-		floats = "dark", -- style for floating windows: "dark", "transparent"
-	},
+-- Color palette
+local colors = {
+	fg = "#e4e4ef",
+	fg_1 = "#f4f4ff",
+	fg_2 = "#f5f5f5",
+	white = "#ffffff",
+	black = "#000000",
+	bg_minus_1 = "#101010",
+	bg = "#181818",
+	bg_1 = "#282828",
+	bg_2 = "#453d41",
+	bg_3 = "#484848",
+	bg_4 = "#52494e",
+	red_minus_1 = "#c73c3f",
+	red = "#f43841",
+	red_1 = "#ff4f58",
+	green = "#73c936",
+	green_1 = "#b8bb26",
+	yellow = "#ffdd33",
+	brown = "#cc8c3c",
+	quartz = "#95a99f",
+	niagara_minus_2 = "#303540",
+	niagara_minus_1 = "#565f73",
+	niagara = "#96a6c8",
+	wisteria = "#9e95c7",
+	aqua = "#8ec07c",
 }
 
--- User configuration
-local config = default_config
+-- Terminal colors
+local terminal_colors = {
+	terminal_color_0 = colors.bg_3,
+	terminal_color_1 = colors.red_minus_1,
+	terminal_color_2 = colors.green,
+	terminal_color_3 = colors.yellow,
+	terminal_color_4 = colors.niagara,
+	terminal_color_5 = colors.wisteria,
+	terminal_color_6 = colors.quartz,
+	terminal_color_7 = colors.fg,
+	terminal_color_8 = colors.bg_4,
+	terminal_color_9 = colors.red_minus_1,
+	terminal_color_10 = colors.green,
+	terminal_color_11 = colors.yellow,
+	terminal_color_12 = colors.niagara,
+	terminal_color_13 = colors.wisteria,
+	terminal_color_14 = colors.quartz,
+	terminal_color_15 = colors.white,
+}
 
--- Color palette
-local function get_colors(opts)
-	local colors = {
-		-- Background colors
-		bg = opts.transparent and "NONE" or "#181818",
-		bg_light = "#282828",
-		bg_lighter = "#383838",
-		bg_dark = "#101010",
-
-		-- Foreground colors
-		fg = "#e4e4ef",
-		fg_light = "#f4f4ff",
-		fg_dark = "#a0a0a0",
-		fg_comment = "#cc8c3c",
-
-		-- Accent colors
-		red = "#f43841",
-		red_dark = "#cc1f28",
-		green = "#73c936",
-		green_dark = "#5a9a28",
-		yellow = "#ffdd33",
-		yellow_dark = "#cc9800",
-		blue = "#96a6c8",
-		blue_dark = "#565f73",
-		purple = "#9e95c7",
-		purple_dark = "#73729a",
-		cyan = "#95a99c",
-		cyan_dark = "#72847a",
-		orange = "#ffb04a",
-		orange_dark = "#cc8800",
-
-		-- UI colors
-		cursor = "#ffdd33",
-		visual = "#484848",
-		search = "#9e95c7",
-		line_number = "#484848",
-		line_number_current = "#ffdd33",
-		statusline = opts.styles.sidebars == "transparent" and "NONE" or "#282828",
-		pmenu = opts.styles.floats == "transparent" and "NONE" or "#282828",
-		pmenu_sel = "#484848",
-
-		-- Git colors
-		git_add = "#73c936",
-		git_change = "#ffdd33",
-		git_delete = "#f43841",
-
-		-- Diagnostic colors
-		error = "#ff6b6b",
-		warning = "#ffdd33",
-		info = "#74c0fc",
-		hint = "#6b7280",
-	}
-
-	-- Handle dim inactive
-	if opts.dim_inactive then
-		colors.bg_inactive = "#151515"
-		colors.fg_inactive = "#8a8a8a"
-	end
-
-	return colors
-end
-
--- Helper function to set highlight groups
-local function highlight(group, opts, config_opts)
-	local hl = {}
-	if opts.fg then
-		hl.fg = opts.fg
-	end
-	if opts.bg then
-		hl.bg = opts.bg
-	end
-	if opts.sp then
-		hl.sp = opts.sp
-	end
-
-	if opts.bold and config_opts.bold then
-		hl.bold = true
-	end
-	if opts.italic and config_opts.italic then
-		hl.italic = true
-	end
-	if opts.underline and config_opts.underline then
-		hl.underline = true
-	end
-	if opts.undercurl and config_opts.undercurl then
-		hl.undercurl = true
-	end
-	if opts.underdashed and config_opts.underdashed then
-		hl.underdashed = true
-	end
-	if opts.reverse and config_opts.inverse then
-		hl.reverse = true
-	end
-	if opts.strikethrough then
-		hl.strikethrough = true
-	end
-	vim.api.nvim_set_hl(0, group, hl)
-end
-
--- Setup function
 function M.setup(opts)
-	config = vim.tbl_deep_extend("force", default_config, opts or {})
-end
+	opts = opts or {}
 
--- Load the colorscheme
-function M.load()
-	-- Reset existing highlights
-	vim.cmd("highlight clear")
+	-- Reset highlighting
+	vim.cmd("hi clear")
 	if vim.fn.exists("syntax_on") then
 		vim.cmd("syntax reset")
 	end
 
-	vim.g.colors_name = "gruber-darker"
-	vim.o.background = "dark"
 	vim.o.termguicolors = true
+	vim.g.colors_name = "gruber-darker"
 
-	local colors = get_colors(config)
-
-	-- Editor highlights
-	highlight("Normal", { fg = colors.fg, bg = colors.bg }, config)
-	highlight("NormalFloat", {
-		fg = colors.fg,
-		bg = config.styles.floats == "transparent" and "NONE" or colors.bg_light,
-	}, config)
-	highlight("FloatBorder", { fg = colors.fg_dark, bg = colors.bg_light }, config)
-	highlight("Cursor", { fg = colors.bg, bg = colors.cursor }, config)
-	highlight("CursorLine", { bg = colors.bg }, config)
-	highlight("CursorColumn", { bg = colors.bg_light }, config)
-	highlight("ColorColumn", { bg = colors.bg_light }, config)
-	highlight("LineNr", { fg = colors.line_number }, config)
-	highlight("CursorLineNr", { fg = colors.line_number_current }, config)
-	highlight("SignColumn", { bg = colors.bg }, config)
-	highlight("Folded", {
-		fg = colors.fg_comment,
-		bg = colors.bg_light,
-		italic = config.italic.folds,
-	}, config)
-	highlight("FoldColumn", { fg = colors.fg_comment, bg = colors.bg }, config)
-	highlight("VertSplit", { fg = colors.bg_lighter }, config)
-	highlight("WinSeparator", { fg = colors.bg_lighter }, config)
-
-	-- Dim inactive windows
-	if config.dim_inactive then
-		highlight("NormalNC", { fg = colors.fg_inactive, bg = colors.bg_inactive }, config)
+	-- Set terminal colors
+	for k, v in pairs(terminal_colors) do
+		vim.g[k] = v
 	end
 
-	-- Search and selection
-	highlight("Visual", { bg = colors.visual }, config)
-	highlight("VisualNOS", { bg = colors.visual }, config)
-	highlight("Search", { bg = colors.search, fg = colors.bg }, config)
-	highlight("IncSearch", { bg = colors.yellow, fg = colors.bg }, config)
-	highlight("CurSearch", { bg = colors.yellow, fg = colors.bg }, config)
+	-- UI Elements
+	local highlights = {
+		-- Editor
+		Normal = { fg = colors.fg, bg = colors.bg },
+		NormalFloat = { fg = colors.fg, bg = colors.bg_1 },
+		ColorColumn = { bg = colors.bg_1 },
+		Cursor = { bg = colors.yellow },
+		CursorColumn = { bg = colors.bg_1 },
+		CursorLine = { bg = colors.bg_1 },
+		CursorLineNr = { fg = colors.yellow, bg = colors.bg_1 },
+		LineNr = { fg = colors.bg_4 },
+		VertSplit = { fg = colors.bg_2 },
+		WinSeparator = { fg = colors.bg_2 },
+		Folded = { fg = colors.brown, bg = colors.bg_1 },
+		FoldColumn = { fg = colors.brown, bg = colors.bg },
+		SignColumn = { fg = colors.bg_2, bg = colors.bg },
 
-	-- Statusline
-	highlight("StatusLine", { fg = colors.fg, bg = colors.statusline }, config)
-	highlight("StatusLineNC", { fg = colors.fg_dark, bg = colors.statusline }, config)
-	highlight("TabLine", { fg = colors.fg_dark, bg = colors.bg_light }, config)
-	highlight("TabLineFill", { bg = colors.bg_light }, config)
-	highlight("TabLineSel", { fg = colors.fg, bg = colors.bg }, config)
+		-- Statusline
+		StatusLine = { fg = colors.white, bg = colors.bg_1 },
+		StatusLineNC = { fg = colors.white, bg = colors.bg_1 },
 
-	-- Popup menu
-	highlight("Pmenu", { fg = colors.fg, bg = colors.pmenu }, config)
-	highlight("PmenuSel", { fg = colors.fg, bg = colors.pmenu_sel }, config)
-	highlight("PmenuSbar", { bg = colors.bg_lighter }, config)
-	highlight("PmenuThumb", { bg = colors.fg_dark }, config)
+		-- Tabline
+		TabLine = { fg = colors.bg_4, bg = colors.bg_1 },
+		TabLineFill = { bg = colors.bg_1 },
+		TabLineSel = { fg = colors.yellow, bg = colors.bg, bold = true },
 
-	-- Messages
-	highlight("ErrorMsg", { fg = colors.error }, config)
-	highlight("WarningMsg", { fg = colors.warning }, config)
-	highlight("MoreMsg", { fg = colors.green }, config)
-	highlight("Question", { fg = colors.blue }, config)
-	highlight("ModeMsg", { fg = colors.fg }, config)
+		-- Popups
+		Pmenu = { fg = colors.fg, bg = colors.bg_1 },
+		PmenuSel = { fg = colors.fg, bg = colors.bg_minus_1 },
+		PmenuSbar = { bg = colors.bg_2 },
+		PmenuThumb = { bg = colors.bg_minus_1 },
 
-	-- Syntax highlighting
-	highlight("Comment", {
-		fg = colors.fg_comment,
-		italic = config.italic.comments,
-	}, config)
-	highlight("Constant", { fg = colors.green }, config)
-	highlight("String", {
-		fg = colors.green,
-		italic = config.italic.strings,
-	}, config)
-	highlight("Character", { fg = colors.green }, config)
-	highlight("Number", { fg = colors.red }, config)
-	highlight("Boolean", { fg = colors.red }, config)
-	highlight("Float", { fg = colors.red }, config)
+		-- Search
+		Search = { fg = colors.black, bg = colors.wisteria },
+		IncSearch = { fg = colors.black, bg = colors.wisteria },
+		CurSearch = { fg = colors.black, bg = colors.yellow },
+		Substitute = { fg = colors.black, bg = colors.red },
 
-	highlight("Identifier", { fg = colors.fg }, config)
-	highlight("Function", { fg = colors.yellow }, config)
+		-- Visual
+		Visual = { bg = colors.bg_3 },
+		VisualNOS = { bg = colors.bg_3 },
 
-	highlight("Statement", { fg = colors.yellow }, config)
-	highlight("Conditional", { fg = colors.yellow }, config)
-	highlight("Repeat", { fg = colors.yellow }, config)
-	highlight("Label", { fg = colors.yellow }, config)
-	highlight("Operator", {
-		fg = colors.fg,
-		italic = config.italic.operators,
-	}, config)
-	highlight("Keyword", { fg = colors.yellow, bold = true }, config)
-	highlight("Exception", { fg = colors.yellow }, config)
+		-- Messages
+		ErrorMsg = { fg = colors.red_1 },
+		WarningMsg = { fg = colors.yellow },
+		ModeMsg = { fg = colors.green },
+		MoreMsg = { fg = colors.green },
+		Question = { fg = colors.niagara },
 
-	highlight("PreProc", { fg = colors.purple }, config)
-	highlight("Include", { fg = colors.purple }, config)
-	highlight("Define", { fg = colors.purple }, config)
-	highlight("Macro", { fg = colors.blue }, config)
-	highlight("PreCondit", { fg = colors.purple }, config)
+		-- Diff
+		DiffAdd = { fg = colors.green, bg = nil },
+		DiffChange = { fg = colors.yellow, bg = nil },
+		DiffDelete = { fg = colors.red_1, bg = nil },
+		DiffText = { fg = colors.yellow, bg = colors.bg_2 },
 
-	highlight("Type", { fg = colors.blue }, config)
-	highlight("StorageClass", { fg = colors.blue }, config)
-	highlight("Structure", { fg = colors.blue }, config)
-	highlight("Typedef", { fg = colors.blue }, config)
+		-- Spelling
+		SpellBad = { sp = colors.red, undercurl = true },
+		SpellCap = { sp = colors.yellow, undercurl = true },
+		SpellLocal = { sp = colors.yellow, undercurl = true },
+		SpellRare = { sp = colors.yellow, undercurl = true },
 
-	highlight("Special", { fg = colors.cyan }, config)
-	highlight("SpecialChar", { fg = colors.green }, config)
-	highlight("Tag", { fg = colors.cyan }, config)
-	highlight("Delimiter", { fg = colors.fg }, config)
-	highlight("SpecialComment", { fg = colors.fg_comment }, config)
-	highlight("Debug", { fg = colors.red }, config)
+		-- Misc
+		Directory = { fg = colors.niagara, bold = true },
+		NonText = { fg = colors.bg_2 },
+		SpecialKey = { fg = colors.bg_2 },
+		Title = { fg = colors.aqua, bold = true },
+		Conceal = { fg = colors.bg_4 },
+		Ignore = { fg = colors.bg_4 },
+		MatchParen = { bg = colors.bg_4 },
+		Underlined = { fg = colors.niagara, underline = true },
+		QuickFixLine = { bg = colors.bg_1 },
 
-	highlight("Underlined", { underline = true }, config)
-	highlight("Ignore", { fg = colors.bg }, config)
-	highlight("Error", { fg = colors.error }, config)
-	highlight("Whitespace", { fg = colors.bg_light }, config)
+		-- Syntax highlighting
+		Comment = { fg = colors.brown },
+		Constant = { fg = colors.yellow, bold = true },
+		String = { fg = colors.green },
+		Character = { fg = colors.green },
+		Number = { fg = colors.wisteria },
+		Boolean = { fg = colors.yellow, bold = true },
+		Float = { fg = colors.wisteria },
 
-	-- Treesitter highlights
-	highlight("@variable", { fg = colors.fg }, config)
-	highlight("@variable.builtin", { fg = colors.yellow, bold = true }, config)
-	highlight("@variable.parameter", { fg = colors.fg }, config)
-	highlight("@variable.member", { fg = colors.fg }, config)
+		Identifier = { fg = colors.fg_1 },
+		Function = { fg = colors.niagara },
 
-	highlight("@constant", { fg = colors.fg }, config)
-	highlight("@constant.builtin", { fg = colors.yellow, bold = true }, config)
-	highlight("@constant.macro", { fg = colors.blue }, config)
+		Statement = { fg = colors.yellow, bold = true },
+		Conditional = { fg = colors.yellow, bold = true },
+		Repeat = { fg = colors.yellow, bold = true },
+		Label = { fg = colors.yellow, bold = true },
+		Operator = { fg = colors.fg },
+		Keyword = { fg = colors.yellow, bold = true },
+		Exception = { fg = colors.yellow, bold = true },
 
-	highlight("@module", { fg = colors.cyan }, config)
-	highlight("@label", { fg = colors.yellow }, config)
+		PreProc = { fg = colors.quartz },
+		Include = { fg = colors.quartz },
+		Define = { fg = colors.quartz },
+		Macro = { fg = colors.quartz },
+		PreCondit = { fg = colors.quartz },
 
-	highlight("@string", {
-		fg = colors.green,
-		italic = config.italic.strings,
-	}, config)
-	highlight("@string.escape", { fg = colors.yellow, bold = true }, config)
-	highlight("@string.regex", { fg = colors.cyan }, config)
+		Type = { fg = colors.quartz },
+		StorageClass = { fg = colors.quartz },
+		Structure = { fg = colors.quartz },
+		Typedef = { fg = colors.quartz },
 
-	highlight("@character", { fg = colors.green }, config)
-	highlight("@character.special", { fg = colors.cyan }, config)
+		Special = { fg = colors.fg },
+		SpecialChar = { fg = colors.fg },
+		Tag = { fg = colors.niagara },
+		Delimiter = { fg = colors.fg },
+		SpecialComment = { fg = colors.green },
+		Debug = { fg = colors.red },
 
-	highlight("@number", { fg = colors.purple }, config)
-	highlight("@number.float", { fg = colors.purple }, config)
+		Error = { fg = colors.red },
+		Todo = { fg = colors.aqua, bold = true },
 
-	highlight("@boolean", { fg = colors.yellow, bold = true }, config)
+		-- TreeSitter
+		["@annotation"] = { fg = colors.quartz },
+		["@attribute"] = { fg = colors.quartz },
+		["@boolean"] = { fg = colors.yellow, bold = true },
+		["@character"] = { fg = colors.green },
+		["@character.special"] = { fg = colors.yellow },
+		["@comment"] = { fg = colors.brown },
+		["@conditional"] = { fg = colors.yellow, bold = true },
+		["@constant"] = { fg = colors.fg },
+		["@constant.builtin"] = { fg = colors.yellow, bold = true },
+		["@constant.macro"] = { fg = colors.quartz },
+		["@constructor"] = { fg = colors.niagara },
+		["@debug"] = { fg = colors.red },
+		["@define"] = { fg = colors.quartz },
+		["@error"] = { fg = colors.red },
+		["@exception"] = { fg = colors.yellow, bold = true },
+		["@field"] = { fg = colors.fg_1 },
+		["@float"] = { fg = colors.wisteria },
+		["@function"] = { fg = colors.niagara },
+		["@function.builtin"] = { fg = colors.yellow },
+		["@function.call"] = { fg = colors.niagara },
+		["@function.macro"] = { fg = colors.quartz },
+		["@include"] = { fg = colors.quartz },
+		["@keyword"] = { fg = colors.yellow, bold = true },
+		["@keyword.function"] = { fg = colors.yellow, bold = true },
+		["@keyword.operator"] = { fg = colors.yellow, bold = true },
+		["@keyword.return"] = { fg = colors.yellow, bold = true },
+		["@label"] = { fg = colors.yellow, bold = true },
+		["@method"] = { fg = colors.niagara },
+		["@method.call"] = { fg = colors.niagara },
+		["@namespace"] = { fg = colors.quartz },
+		["@none"] = { fg = colors.fg },
+		["@number"] = { fg = colors.wisteria },
+		["@operator"] = { fg = colors.fg },
+		["@parameter"] = { fg = colors.fg_1 },
+		["@parameter.reference"] = { fg = colors.fg_1 },
+		["@property"] = { fg = colors.fg_1 },
+		["@punctuation.bracket"] = { fg = colors.fg },
+		["@punctuation.delimiter"] = { fg = colors.fg },
+		["@punctuation.special"] = { fg = colors.fg },
+		["@repeat"] = { fg = colors.yellow, bold = true },
+		["@string"] = { fg = colors.green },
+		["@string.escape"] = { fg = colors.yellow },
+		["@string.regex"] = { fg = colors.yellow },
+		["@string.special"] = { fg = colors.green },
+		["@symbol"] = { fg = colors.quartz },
+		["@tag"] = { fg = colors.niagara },
+		["@tag.attribute"] = { fg = colors.fg },
+		["@tag.delimiter"] = { fg = colors.fg },
+		["@text"] = { fg = colors.fg },
+		["@text.danger"] = { fg = colors.red },
+		["@text.emphasis"] = { italic = true },
+		["@text.literal"] = { fg = colors.green },
+		["@text.note"] = { fg = colors.brown },
+		["@text.reference"] = { fg = colors.niagara, underline = true },
+		["@text.strong"] = { bold = true },
+		["@text.title"] = { fg = colors.niagara, bold = true },
+		["@text.todo"] = { fg = colors.aqua, bold = true },
+		["@text.underline"] = { underline = true },
+		["@text.uri"] = { fg = colors.niagara, underline = true },
+		["@text.warning"] = { fg = colors.yellow },
+		["@type"] = { fg = colors.quartz },
+		["@type.builtin"] = { fg = colors.quartz },
+		["@type.definition"] = { fg = colors.quartz },
+		["@type.qualifier"] = { fg = colors.quartz },
+		["@variable"] = { fg = colors.fg_1 },
+		["@variable.builtin"] = { fg = colors.yellow },
 
-	highlight("@function", { fg = colors.blue }, config)
-	highlight("@function.builtin", { fg = colors.yellow, bold = true }, config)
-	highlight("@function.call", { fg = colors.blue }, config)
-	highlight("@function.macro", { fg = colors.blue }, config)
+		-- LSP
+		LspReferenceText = { bg = colors.bg_1 },
+		LspReferenceRead = { bg = colors.bg_1 },
+		LspReferenceWrite = { bg = colors.bg_1 },
+		LspSignatureActiveParameter = { bg = colors.bg_2 },
+		LspCodeLens = { fg = colors.brown },
+		LspCodeLensSeparator = { fg = colors.bg_4 },
+		LspInfoBorder = { fg = colors.bg_2 },
 
-	highlight("@function.method", { fg = colors.blue }, config)
+		-- Diagnostics
+		DiagnosticError = { fg = colors.red },
+		DiagnosticWarn = { fg = colors.yellow },
+		DiagnosticInfo = { fg = colors.niagara },
+		DiagnosticHint = { fg = colors.green },
+		DiagnosticVirtualTextError = { fg = colors.red },
+		DiagnosticVirtualTextWarn = { fg = colors.yellow },
+		DiagnosticVirtualTextInfo = { fg = colors.niagara },
+		DiagnosticVirtualTextHint = { fg = colors.green },
+		DiagnosticUnderlineError = { sp = colors.red, undercurl = true },
+		DiagnosticUnderlineWarn = { sp = colors.yellow, undercurl = true },
+		DiagnosticUnderlineInfo = { sp = colors.niagara, undercurl = true },
+		DiagnosticUnderlineHint = { sp = colors.green, undercurl = true },
 
-	highlight("@constructor", { fg = colors.blue }, config)
-	highlight("@constructor.lua", { fg = colors.fg }, config)
+		-- Git Signs
+		GitSignsAdd = { fg = colors.green },
+		GitSignsChange = { fg = colors.yellow },
+		GitSignsDelete = { fg = colors.red },
+		GitSignsAddNr = { fg = colors.green },
+		GitSignsChangeNr = { fg = colors.yellow },
+		GitSignsDeleteNr = { fg = colors.red },
+		GitSignsAddLn = { bg = colors.niagara_minus_2 },
+		GitSignsChangeLn = { bg = colors.bg_2 },
+		GitSignsDeleteLn = { bg = colors.red_minus_1 },
 
-	highlight("@operator", {
-		fg = colors.fg,
-		italic = config.italic.operators,
-	}, config)
+		-- Telescope
+		-- TelescopeNormal = { fg = colors.fg, bg = colors.bg },
+		-- TelescopeBorder = { fg = colors.bg_2 },
+		-- TelescopePromptNormal = { fg = colors.fg, bg = colors.bg_1 },
+		-- TelescopePromptBorder = { fg = colors.bg_2 },
+		-- TelescopePromptTitle = { fg = colors.yellow, bold = true },
+		-- TelescopePreviewTitle = { fg = colors.green, bold = true },
+		-- TelescopeResultsTitle = { fg = colors.niagara, bold = true },
+		-- TelescopeSelection = { bg = colors.bg_1 },
+		-- TelescopeSelectionCaret = { fg = colors.yellow },
+		-- TelescopeMatching = { fg = colors.yellow, bold = true },
 
-	highlight("@keyword", { fg = colors.yellow, bold = true }, config)
-	highlight("@keyword.function", { fg = colors.yellow, bold = true }, config)
-	highlight("@keyword.operator", { fg = colors.yellow, bold = true }, config)
-	highlight("@keyword.return", { fg = colors.yellow, bold = true }, config)
-	highlight("@keyword.conditional", { fg = colors.yellow, bold = true }, config)
-	highlight("@keyword.repeat", { fg = colors.yellow, bold = true }, config)
-	highlight("@keyword.import", { fg = colors.yellow, bold = true }, config)
-	highlight("@keyword.exception", { fg = colors.yellow }, config)
+		-- NvimTree
+		-- NvimTreeNormal = { fg = colors.fg, bg = colors.bg },
+		-- NvimTreeFolderIcon = { fg = colors.niagara },
+		-- NvimTreeFolderName = { fg = colors.niagara },
+		-- NvimTreeOpenedFolderName = { fg = colors.niagara, bold = true },
+		-- NvimTreeRootFolder = { fg = colors.yellow, bold = true },
+		-- NvimTreeSpecialFile = { fg = colors.yellow },
+		-- NvimTreeExecFile = { fg = colors.green },
+		-- NvimTreeGitDirty = { fg = colors.yellow },
+		-- NvimTreeGitNew = { fg = colors.green },
+		-- NvimTreeGitDeleted = { fg = colors.red },
+		-- NvimTreeGitStaged = { fg = colors.green },
+		-- NvimTreeWindowPicker = { fg = colors.black, bg = colors.yellow, bold = true },
 
-	highlight("@type", { fg = colors.cyan }, config)
-	highlight("@type.parameter", { fg = colors.yellow }, config)
-	highlight("@type.builtin", { fg = colors.yellow }, config)
-	highlight("@type.qualifier", { fg = colors.yellow }, config)
-	highlight("@type.return", { fg = colors.yellow }, config)
+		-- Neo-tree
+		-- NeoTreeNormal = { fg = colors.fg, bg = colors.bg },
+		-- NeoTreeNormalNC = { fg = colors.fg, bg = colors.bg },
+		-- NeoTreeDirectoryIcon = { fg = colors.niagara },
+		-- NeoTreeDirectoryName = { fg = colors.niagara },
+		-- NeoTreeRootName = { fg = colors.yellow, bold = true },
+		-- NeoTreeGitAdded = { fg = colors.green },
+		-- NeoTreeGitModified = { fg = colors.yellow },
+		-- NeoTreeGitDeleted = { fg = colors.red },
+		-- NeoTreeGitUntracked = { fg = colors.brown },
 
-	highlight("@property", { fg = colors.fg }, config)
-	highlight("@attribute", { fg = colors.purple }, config)
+		-- WhichKey
+		WhichKey = { fg = colors.yellow },
+		WhichKeyGroup = { fg = colors.niagara },
+		WhichKeyDesc = { fg = colors.fg },
+		WhichKeySeparator = { fg = colors.brown },
+		WhichKeyFloat = { bg = colors.bg_1 },
+		WhichKeyValue = { fg = colors.green },
 
-	highlight("@comment", {
-		fg = colors.fg_comment,
-		italic = config.italic.comments,
-	}, config)
-	highlight("@comment.documentation", {
-		fg = colors.fg_comment,
-		italic = config.italic.comments,
-	}, config)
+		-- Indent Blankline
+		IndentBlanklineChar = { fg = colors.bg_2 },
+		IndentBlanklineContextChar = { fg = colors.bg_4 },
+		IndentBlanklineContextStart = { sp = colors.bg_4, underline = true },
 
-	highlight("@punctuation.delimiter", { fg = colors.fg }, config)
-	highlight("@punctuation.bracket", { fg = colors.fg }, config)
-	highlight("@punctuation.special", { fg = colors.cyan }, config)
+		-- nvim-cmp
+		-- CmpItemAbbr = { fg = colors.fg },
+		-- CmpItemAbbrDeprecated = { fg = colors.bg_4, strikethrough = true },
+		-- CmpItemAbbrMatch = { fg = colors.yellow, bold = true },
+		-- CmpItemAbbrMatchFuzzy = { fg = colors.yellow },
+		-- CmpItemKind = { fg = colors.niagara },
+		-- CmpItemMenu = { fg = colors.brown },
 
-	highlight("@tag", { fg = colors.blue }, config)
-	highlight("@tag.attribute", { fg = colors.fg }, config)
-	highlight("@tag.delimiter", { fg = colors.fg }, config)
+		-- Hop
+		HopNextKey = { fg = colors.yellow, bold = true },
+		HopNextKey1 = { fg = colors.green, bold = true },
+		HopNextKey2 = { fg = colors.niagara },
+		HopUnmatched = { fg = colors.bg_4 },
 
-	highlight("@php_tag", { fg = colors.purple }, config)
+		-- Leap
+		LeapMatch = { fg = colors.yellow, bold = true },
+		LeapLabelPrimary = { fg = colors.black, bg = colors.yellow, bold = true },
+		LeapLabelSecondary = { fg = colors.black, bg = colors.green, bold = true },
+		LeapBackdrop = { fg = colors.bg_4 },
 
-	highlight("LspReferenceText", { bg = colors.bg_lighter }, config)
-	highlight("LspReferenceRead", { bg = colors.bg_lighter }, config)
-	highlight("LspReferenceWrite", { bg = colors.bg_lighter }, config)
-	highlight("LspSignatureActiveParameter", { fg = colors.yellow, bold = true }, config)
+		-- Dashboard
+		-- DashboardHeader = { fg = colors.niagara },
+		-- DashboardCenter = { fg = colors.fg },
+		-- DashboardFooter = { fg = colors.brown },
+		-- DashboardShortCut = { fg = colors.yellow },
 
-	-- Diagnostic highlights
-	highlight("DiagnosticError", { fg = colors.error }, config)
-	highlight("DiagnosticWarn", { fg = colors.warning }, config)
-	highlight("DiagnosticInfo", { fg = colors.info }, config)
-	highlight("DiagnosticHint", { fg = colors.hint }, config)
+		-- Notify
+		-- NotifyERRORBorder = { fg = colors.red },
+		-- NotifyWARNBorder = { fg = colors.yellow },
+		-- NotifyINFOBorder = { fg = colors.niagara },
+		-- NotifyDEBUGBorder = { fg = colors.brown },
+		-- NotifyTRACEBorder = { fg = colors.wisteria },
+		-- NotifyERRORIcon = { fg = colors.red },
+		-- NotifyWARNIcon = { fg = colors.yellow },
+		-- NotifyINFOIcon = { fg = colors.niagara },
+		-- NotifyDEBUGIcon = { fg = colors.brown },
+		-- NotifyTRACEIcon = { fg = colors.wisteria },
+		-- NotifyERRORTitle = { fg = colors.red },
+		-- NotifyWARNTitle = { fg = colors.yellow },
+		-- NotifyINFOTitle = { fg = colors.niagara },
+		-- NotifyDEBUGTitle = { fg = colors.brown },
+		-- NotifyTRACETitle = { fg = colors.wisteria },
 
-	highlight("DiagnosticVirtualTextError", { fg = colors.error, bg = colors.bg }, config)
-	highlight("DiagnosticVirtualTextWarn", { fg = colors.warning, bg = colors.bg }, config)
-	highlight("DiagnosticVirtualTextInfo", { fg = colors.info, bg = colors.bg }, config)
-	highlight("DiagnosticVirtualTextHint", { fg = colors.hint, bg = colors.bg }, config)
-	highlight("DiagnosticVirtualTextUnnecessary", { fg = colors.hint, bg = colors.bg }, config)
+		-- Bufferline
+		-- BufferLineFill = { bg = colors.bg_minus_1 },
+		-- BufferLineBackground = { fg = colors.bg_4, bg = colors.bg_1 },
+		-- BufferLineTab = { fg = colors.bg_4, bg = colors.bg_1 },
+		-- BufferLineTabSelected = { fg = colors.yellow, bg = colors.bg, bold = true },
+		-- BufferLineBuffer = { fg = colors.bg_4, bg = colors.bg_1 },
+		-- BufferLineBufferVisible = { fg = colors.fg, bg = colors.bg },
+		-- BufferLineBufferSelected = { fg = colors.yellow, bg = colors.bg, bold = true },
+		-- BufferLineIndicatorSelected = { fg = colors.yellow },
+		-- BufferLineSeparator = { fg = colors.bg_minus_1, bg = colors.bg_1 },
+		-- BufferLineSeparatorVisible = { fg = colors.bg_minus_1, bg = colors.bg },
+		-- BufferLineSeparatorSelected = { fg = colors.bg_minus_1, bg = colors.bg },
+		-- BufferLineCloseButton = { fg = colors.bg_4, bg = colors.bg_1 },
+		-- BufferLineCloseButtonVisible = { fg = colors.bg_4, bg = colors.bg },
+		-- BufferLineCloseButtonSelected = { fg = colors.red, bg = colors.bg },
+		-- BufferLineModified = { fg = colors.yellow, bg = colors.bg_1 },
+		-- BufferLineModifiedVisible = { fg = colors.yellow, bg = colors.bg },
+		-- BufferLineModifiedSelected = { fg = colors.yellow, bg = colors.bg },
+		-- BufferLineDiagnostic = { fg = colors.bg_4, bg = colors.bg_1 },
+		-- BufferLineDiagnosticVisible = { fg = colors.bg_4, bg = colors.bg },
+		-- BufferLineDiagnosticSelected = { fg = colors.fg, bg = colors.bg },
+		-- BufferLineError = { fg = colors.red, bg = colors.bg_1 },
+		-- BufferLineErrorVisible = { fg = colors.red, bg = colors.bg },
+		-- BufferLineErrorSelected = { fg = colors.red, bg = colors.bg },
+		-- BufferLineErrorDiagnostic = { fg = colors.red, bg = colors.bg_1 },
+		-- BufferLineErrorDiagnosticVisible = { fg = colors.red, bg = colors.bg },
+		-- BufferLineErrorDiagnosticSelected = { fg = colors.red, bg = colors.bg },
+		-- BufferLineWarning = { fg = colors.yellow, bg = colors.bg_1 },
+		-- BufferLineWarningVisible = { fg = colors.yellow, bg = colors.bg },
+		-- BufferLineWarningSelected = { fg = colors.yellow, bg = colors.bg },
+		-- BufferLineWarningDiagnostic = { fg = colors.yellow, bg = colors.bg_1 },
+		-- BufferLineWarningDiagnosticVisible = { fg = colors.yellow, bg = colors.bg },
+		-- BufferLineWarningDiagnosticSelected = { fg = colors.yellow, bg = colors.bg },
+		-- BufferLineInfo = { fg = colors.niagara, bg = colors.bg_1 },
+		-- BufferLineInfoVisible = { fg = colors.niagara, bg = colors.bg },
+		-- BufferLineInfoSelected = { fg = colors.niagara, bg = colors.bg },
+		-- BufferLineInfoDiagnostic = { fg = colors.niagara, bg = colors.bg_1 },
+		-- BufferLineInfoDiagnosticVisible = { fg = colors.niagara, bg = colors.bg },
+		-- BufferLineInfoDiagnosticSelected = { fg = colors.niagara, bg = colors.bg },
+		-- BufferLineHint = { fg = colors.green, bg = colors.bg_1 },
+		-- BufferLineHintVisible = { fg = colors.green, bg = colors.bg },
+		-- BufferLineHintSelected = { fg = colors.green, bg = colors.bg },
+		-- BufferLineHintDiagnostic = { fg = colors.green, bg = colors.bg_1 },
+		-- BufferLineHintDiagnosticVisible = { fg = colors.green, bg = colors.bg },
+		-- BufferLineHintDiagnosticSelected = { fg = colors.green, bg = colors.bg },
 
-	highlight("DiagnosticUnderlineError", { sp = colors.error, underdashed = true }, config)
-	highlight("DiagnosticUnderlineWarn", { sp = colors.warning, underdashed = true }, config)
-	highlight("DiagnosticUnderlineInfo", { sp = colors.info, underdashed = true }, config)
-	highlight("DiagnosticUnderlineHint", { sp = colors.hint, underdashed = true }, config)
-	highlight("DiagnosticUnnecessary", { fg = colors.hint, sp = colors.hint, underdashed = true }, config)
+		-- Mini.StatusLine
+		MiniStatuslineModeNormal = { bg = colors.bg_1 },
+		MiniStatuslineModeCommand = { bg = colors.bg_1 },
+	}
 
-	-- Mini.StatusLine
-	highlight("MiniStatuslineFilename", { fg = colors.fg }, config)
-	highlight("MiniStatuslineModeNormal", { bg = colors.bg_lighter, fg = colors.fg, bold = true }, config)
-	highlight("MiniStatuslineModeVisual", { bg = colors.purple, fg = colors.bg, bold = true }, config)
-	highlight("MiniStatuslineModeCommand", { bg = colors.purple, fg = colors.bg, bold = true }, config)
-
-	-- Fzf
-	highlight("FZF_FG", { fg = colors.fg_dark }, config)
-	highlight("FZF_HL_PLUS", { fg = colors.yellow }, config)
-	highlight("FZF_HL", { fg = colors.yellow }, config)
-	highlight("FZF_PROMPT", { fg = colors.green_dark }, config)
-	highlight("FZF_HEADER", { fg = colors.green_dark }, config)
-end
-
--- Convenience function for vim.cmd.colorscheme()
-function M.colorscheme()
-	M.load()
+	-- Apply highlights
+	for group, settings in pairs(highlights) do
+		vim.api.nvim_set_hl(0, group, settings)
+	end
 end
 
 return M

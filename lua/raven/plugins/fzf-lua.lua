@@ -12,12 +12,9 @@ return {
 			},
 			fzf_colors = {
 				true, -- inherit fzf colors that aren't specified below from
-				-- the auto-generated theme similar to `fzf_colors=true`
-				["fg"] = { "fg", "FZF_FG" },
-				["hl"] = { "fg", "FZF_HL" },
-				["hl+"] = { "fg", "FZF_HL_PLUS" },
-				["prompt"] = { "fg", "FZF_PROMPT" },
-				["header"] = { "fg", "FZF_HEADER" },
+				["pointer"] = { "fg", "Normal" },
+				["hl"] = { "fg", "Keyword" },
+				["hl+"] = { "fg", "Keyword" },
 			},
 			fzf_opts = {
 				["--padding"] = "1,2,1,2", -- Additional internal padding if needed

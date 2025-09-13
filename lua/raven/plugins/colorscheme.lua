@@ -1,48 +1,103 @@
--- return {
--- 	"ravenpdev/gruber-darker.nvim",
--- 	name = "gruber-darker",
--- 	priority = 1000,
--- 	enabled = false,
--- 	lazy = false,
--- 	config = function()
--- 		require("gruber-darker").load()
--- 	end,
--- }
---
 return {
-	"webhooked/kanso.nvim",
+	"AlexvZyl/nordic.nvim",
 	lazy = false,
 	priority = 1000,
+	enabled = false,
 	config = function()
-		-- Default options:
-		require("kanso").setup({
-			bold = true, -- enable bold fonts
-			italics = true, -- enable italics
-			compile = false, -- enable compiling the colorscheme
-			undercurl = true, -- enable undercurls
-			commentStyle = { italic = false },
-			functionStyle = {},
-			keywordStyle = { italic = false, bold = true },
-			statementStyle = {},
-			typeStyle = {},
-			transparent = false, -- do not set background color
-			dimInactive = false, -- dim inactive window `:h hl-NormalNC`
-			terminalColors = true, -- define vim.g.terminal_color_{0,17}
-			colors = { -- add/modify theme and palette colors
-				palette = {},
-				theme = { zen = {}, pearl = {}, ink = {}, all = {} },
-			},
-			overrides = function(colors) -- add/modify highlights
-				return {}
+		require("nordic").setup({
+			-- This callback can be used to override the colors used in the base palette.
+			on_palette = function(palette) end,
+			-- This callback can be used to override the colors used in the extended palette.
+			after_palette = function(palette)
+				palette.bg = palette.bg_dark
+				palette.bg_visual = palette.grey1
 			end,
-			background = { -- map the value of 'background' option to a theme
-				dark = "ink", -- try "zen", "mist" or "pearl" !
-				light = "ink", -- try "zen", "mist" or "pearl" !
+			-- This callback can be used to override highlights before they are applied.
+			on_highlight = function(highlights, palette)
+				highlights.LineNr = { fg = palette.gray4 }
+				highlights.Comment = { fg = palette.gray5 }
+			end,
+			-- Enable bold keywords.
+			bold_keywords = true,
+			-- Enable italic comments.
+			italic_comments = false,
+			-- Enable editor background transparency.
+			transparent = {
+				-- Enable transparent background.
+				bg = false,
+				-- Enable transparent background for floating windows.
+				float = false,
 			},
-			foreground = "default", -- "default" or "saturated" (can also be a table like background)
+			-- Enable brighter float border.
+			bright_border = false,
+			-- Reduce the overall amount of blue in the theme (diverges from base Nord).
+			reduced_blue = true,
+			-- Swap the dark background with the normal one.
+			swap_backgrounds = false,
+			-- Cursorline options.  Also includes visual/selection.
+			cursorline = {
+				-- Bold font in cursorline.
+				bold = false,
+				-- Bold cursorline number.
+				bold_number = true,
+				-- Available styles: 'dark', 'light'.
+				theme = "dark",
+				-- Blending the cursorline bg with the buffer bg.
+				blend = 0.85,
+			},
+			noice = {
+				-- Available styles: `classic`, `flat`.
+				style = "classic",
+			},
+			telescope = {
+				-- Available styles: `classic`, `flat`.
+				style = "flat",
+			},
+			leap = {
+				-- Dims the backdrop when using leap.
+				dim_backdrop = false,
+			},
+			ts_context = {
+				-- Enables dark background for treesitter-context window
+				dark_background = true,
+			},
 		})
 
-		-- setup must be called before loading
-		vim.cmd("colorscheme kanso")
+		vim.cmd.colorscheme("nordic")
 	end,
 }
+
+-- return {
+-- 	"rose-pine/neovim",
+-- 	name = "rose-pine",
+-- 	config = function()
+-- 		require("rose-pine").setup({
+-- 			variant = "auto", -- auto, main, moon, or dawn
+-- 			dark_variant = "main", -- main, moon, or dawn
+-- 			dim_inactive_windows = false,
+-- 			extend_background_behind_borders = true,
+--
+-- 			enable = {
+-- 				terminal = true,
+-- 				legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
+-- 				migrations = true, -- Handle deprecated options automatically
+-- 			},
+--
+-- 			styles = {
+-- 				bold = true,
+-- 				italic = false,
+-- 				transparency = false,
+-- 			},
+--
+-- 			highlight_groups = {
+-- 				Keyword = { bold = true },
+-- 				Boolean = { bold = true },
+-- 				-- StatusLine = { fg = "love", bg = "love", blend = 15 },
+-- 				-- VertSplit = { fg = "muted", bg = "muted" },
+-- 				-- Visual = { fg = "base", bg = "text", inherit = false },
+-- 			},
+-- 		})
+--
+-- 		vim.cmd("colorscheme rose-pine")
+-- 	end,
+-- }
