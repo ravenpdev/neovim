@@ -25,6 +25,9 @@ return {
 					["shift-tab"] = "up",
 				},
 			},
+			files = {
+				file_icons = false,
+			},
 		})
 
 		require("fzf-lua").register_ui_select()

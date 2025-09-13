@@ -1,3 +1,9 @@
+; extends
+
+;; Previous directive delimiter captures (for <% %> <%= <%! <%#) ( (directive (directive_marker) @keyword.directive (#any-of? @keyword.directive "<%" "%>" "<%=" "<%!" "<%#") ) )
+
+;; New capture for identifier inside directive ( (directive (expression_value (source (identifier) @custom.identifier ) ) ) )
+
 (function_item
   parameters: (parameters
     (parameter

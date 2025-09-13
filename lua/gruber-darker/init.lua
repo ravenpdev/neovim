@@ -262,16 +262,16 @@ function M.setup(opts)
 		-- Diagnostics
 		DiagnosticError = { fg = colors.red },
 		DiagnosticWarn = { fg = colors.yellow },
-		DiagnosticInfo = { fg = colors.niagara },
-		DiagnosticHint = { fg = colors.green },
+		DiagnosticInfo = { fg = colors.quartz },
+		DiagnosticHint = { fg = colors.wisteria },
 		DiagnosticVirtualTextError = { fg = colors.red },
 		DiagnosticVirtualTextWarn = { fg = colors.yellow },
-		DiagnosticVirtualTextInfo = { fg = colors.niagara },
-		DiagnosticVirtualTextHint = { fg = colors.green },
+		DiagnosticVirtualTextInfo = { fg = colors.quartz },
+		DiagnosticVirtualTextHint = { fg = colors.wisteria },
 		DiagnosticUnderlineError = { sp = colors.red, undercurl = true },
 		DiagnosticUnderlineWarn = { sp = colors.yellow, undercurl = true },
-		DiagnosticUnderlineInfo = { sp = colors.niagara, undercurl = true },
-		DiagnosticUnderlineHint = { sp = colors.green, undercurl = true },
+		DiagnosticUnderlineInfo = { sp = colors.quartz, undercurl = true },
+		DiagnosticUnderlineHint = { sp = colors.wisteria, undercurl = true },
 
 		-- Git Signs
 		GitSignsAdd = { fg = colors.green },
