@@ -102,9 +102,9 @@ function M.setup(opts)
 		PmenuThumb = { bg = colors.bg_minus_1 },
 
 		-- Search
-		Search = { fg = colors.black, bg = colors.wisteria },
-		IncSearch = { fg = colors.black, bg = colors.wisteria },
-		CurSearch = { fg = colors.black, bg = colors.yellow },
+		Search = { bg = colors.bg_3 },
+		IncSearch = { bg = colors.bg_3 },
+		CurSearch = { bg = colors.bg_3 },
 		Substitute = { fg = colors.black, bg = colors.red },
 
 		-- Visual
@@ -172,7 +172,7 @@ function M.setup(opts)
 		Structure = { fg = colors.quartz },
 		Typedef = { fg = colors.quartz },
 
-		Special = { fg = colors.fg },
+		Special = { fg = colors.white, bold = true },
 		SpecialChar = { fg = colors.fg },
 		Tag = { fg = colors.niagara },
 		Delimiter = { fg = colors.fg },
