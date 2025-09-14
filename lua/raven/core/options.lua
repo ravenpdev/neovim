@@ -5,7 +5,7 @@ vim.g.lazyvim_prettier_needs_config = true
 -- Basic settings
 vim.opt.number = true
 vim.opt.relativenumber = true
--- vim.opt.cursorline = true
+vim.opt.cursorline = true
 vim.opt.wrap = true
 vim.opt.showbreak = "↪ "
 vim.opt.scrolloff = 8
@@ -30,6 +30,7 @@ vim.opt.incsearch = true
 
 -- Visual settings
 vim.o.termguicolors = true
+vim.opt.guicursor = "n-v-c:block-Cursor"
 vim.opt.signcolumn = "yes"
 vim.opt.completeopt = "menuone,noinsert,noselect"
 vim.opt.showmode = false
@@ -59,7 +60,7 @@ vim.opt.splitbelow = true
 vim.opt.inccommand = "split"
 vim.opt.fillchars:append({
 	vert = "┊", -- Thicker vertical bar
-	horiz = "━", -- Thicker horizontal bar
+	horiz = "┈", -- Thicker horizontal bar
 })
 
 local augroup = vim.api.nvim_create_augroup("UserConfig", {})

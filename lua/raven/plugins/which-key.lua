@@ -9,6 +9,9 @@ return {
 		icons = {
 			rules = false,
 		},
+		win = {
+			border = "none",
+		},
 	},
 	keys = {
 		{

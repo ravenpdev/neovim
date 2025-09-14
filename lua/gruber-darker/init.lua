@@ -76,9 +76,9 @@ function M.setup(opts)
 		NormalFloat = { fg = colors.fg, bg = colors.bg_1 },
 		ColorColumn = { bg = colors.bg_1 },
 		Cursor = { bg = colors.yellow },
-		CursorColumn = { bg = colors.bg_1 },
-		CursorLine = { bg = colors.bg_1 },
-		CursorLineNr = { fg = colors.yellow, bg = colors.bg_1 },
+		CursorColumn = { bg = "none" },
+		CursorLine = { bg = "none" },
+		CursorLineNr = { fg = colors.yellow, bg = "none" },
 		LineNr = { fg = colors.bg_4 },
 		VertSplit = { fg = colors.bg_2 },
 		WinSeparator = { fg = colors.bg_2 },
@@ -87,8 +87,8 @@ function M.setup(opts)
 		SignColumn = { fg = colors.bg_2, bg = colors.bg },
 
 		-- Statusline
-		StatusLine = { fg = colors.white, bg = colors.bg_1 },
-		StatusLineNC = { fg = colors.white, bg = colors.bg_1 },
+		StatusLine = { fg = colors.fg_1, bg = colors.bg_1 },
+		StatusLineNC = { fg = colors.fg_1, bg = colors.bg_1 },
 
 		-- Tabline
 		TabLine = { fg = colors.bg_4, bg = colors.bg_1 },
@@ -172,7 +172,7 @@ function M.setup(opts)
 		Structure = { fg = colors.quartz },
 		Typedef = { fg = colors.quartz },
 
-		Special = { fg = colors.white, bold = true },
+		Special = { fg = colors.white },
 		SpecialChar = { fg = colors.fg },
 		Tag = { fg = colors.niagara },
 		Delimiter = { fg = colors.fg },
@@ -249,6 +249,8 @@ function M.setup(opts)
 		["@type.qualifier"] = { fg = colors.quartz },
 		["@variable"] = { fg = colors.fg_1 },
 		["@variable.builtin"] = { fg = colors.yellow },
+
+		["@markup.raw"] = { fg = colors.fg_1, bg = colors.bg_1, bold = true },
 
 		-- LSP
 		LspReferenceText = { bg = colors.bg_1 },
@@ -426,6 +428,7 @@ function M.setup(opts)
 		-- Mini.StatusLine
 		MiniStatuslineModeNormal = { bg = colors.bg_1 },
 		MiniStatuslineModeCommand = { bg = colors.bg_1 },
+		MiniStatuslineModeInsert = { bg = colors.bg_1 },
 	}
 
 	-- Apply highlights
