@@ -16,11 +16,12 @@ vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.softtabstop = 4
 vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.autoindent = true
 vim.opt.linebreak = true
 vim.opt.breakindent = true
 -- vim.opt.breakindentopt = "shift:2"
+-- conflict with treesitter --
+-- vim.opt.smartindent = true
+-- vim.opt.autoindent = true
 
 -- Search settings
 vim.opt.ignorecase = true
@@ -30,8 +31,8 @@ vim.opt.incsearch = true
 
 -- Visual settings
 vim.o.termguicolors = true
-vim.opt.guicursor = "n-v-c:block-Cursor"
-vim.opt.signcolumn = "yes"
+vim.opt.guicursor = "a:block"
+vim.opt.signcolumn = "yes:2"
 vim.opt.completeopt = "menuone,noinsert,noselect"
 vim.opt.showmode = false
 
@@ -83,6 +84,41 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		end
 	end,
 })
+
+-- Then create an autocmd to add padding to the hover window
+-- vim.api.nvim_create_autocmd("FileType", {
+-- 	pattern = "lsp-hover",
+-- 	callback = function(args)
+-- 		local bufnr = args.buf
+-- 		local winid = vim.fn.bufwinid(bufnr)
+--
+-- 		if winid ~= -1 then
+-- 			-- Add padding by modifying the window options
+-- 			vim.api.nvim_win_set_config(winid, {
+-- 				relative = "cursor",
+-- 				row = 1,
+-- 				col = 0,
+-- 			})
+--
+-- 			-- Add virtual padding by prepending/appending spaces to lines
+-- 			local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
+-- 			local padded_lines = {}
+--
+-- 			-- Add top padding (empty lines)
+-- 			table.insert(padded_lines, "")
+--
+-- 			-- Add side padding to each line
+-- 			for _, line in ipairs(lines) do
+-- 				table.insert(padded_lines, "  " .. line .. "  ")
+-- 			end
+--
+-- 			-- Add bottom padding (empty lines)
+-- 			table.insert(padded_lines, "")
+--
+-- 			vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, padded_lines)
+-- 		end
+-- 	end,
+-- })
 
 -- local function close_other_buffers()
 -- 	local current_buf = vim.api.nvim_get_current_buf()

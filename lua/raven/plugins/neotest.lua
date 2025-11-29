@@ -9,6 +9,7 @@ return {
 		"V13Axel/neotest-pest",
 		"olimorris/neotest-rspec",
 		"jfpedroza/neotest-elixir",
+		"nvim-neotest/neotest-go",
 	},
 	config = function()
 		local neotest = require("neotest")
@@ -18,6 +19,7 @@ return {
 				require("neotest-rspec"),
 				require("neotest-pest"),
 				require("neotest-elixir"),
+				require("neotest-go"),
 			},
 		})
 

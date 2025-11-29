@@ -7,11 +7,13 @@ return {
 
 		require("mini.pairs").setup()
 
+		require("mini.snippets").setup()
+
 		-- require("mini.files").setup()
 
 		local MiniStatusline = require("mini.statusline")
 		require("mini.statusline").setup({
-			use_icons = false,
+			use_icons = true,
 			content = {
 				active = function()
 					local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
@@ -70,13 +72,11 @@ return {
 
 					return MiniStatusline.combine_groups({
 						{ hl = mode_hl, strings = { mode } },
-						"%<",
-						{ hl = "MiniStatuslineFilename", strings = { filename } },
-						"%=",
-						{ hl = "MiniStatuslineFilename", strings = { git } },
+						{ hl = "MiniStatuslineFilename", strings = { git, filename } },
 						"%=",
 						{ hl = "MiniStatuslineFilename", strings = { diagnostics } },
-						{ hl = "MiniStatuslineFilename", strings = { fileinfo, search, location } },
+						{ hl = "MiniStatuslineFilename", strings = { fileinfo, location } },
+						-- { hl = "MiniStatuslineFilename", strings = { fileinfo, search, location } },
 					})
 				end,
 			},

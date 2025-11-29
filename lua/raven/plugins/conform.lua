@@ -5,12 +5,12 @@ return {
 	opts = {
 		formatters_by_ft = {
 			-- Go
-			-- go = { "goimports", "gofmt" },
+			go = { "goimports", "gofmt" },
 
 			-- Lua
 			lua = { "stylua" },
 
-			-- Web technologies
+			-- web
 			javascript = { "prettier" },
 			typescript = { "prettier" },
 			javascriptreact = { "prettier" },
@@ -29,7 +29,7 @@ return {
 			-- python = { "isort", "black" },
 
 			-- PHP/Laravel
-			-- php = { "pint" },
+			php = { "pint" },
 
 			-- ruby = { "rubocop" },
 

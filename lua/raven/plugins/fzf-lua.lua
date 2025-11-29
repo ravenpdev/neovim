@@ -20,6 +20,10 @@ return {
 				["--padding"] = "1,2,1,2", -- Additional internal padding if needed
 			},
 			keymap = {
+				builtin = {
+					["<S-down>"] = "preview-down",
+					["<S-up>"] = "preview-up",
+				},
 				fzf = {
 					["tab"] = "down",
 					["shift-tab"] = "up",
@@ -39,9 +43,7 @@ return {
 		map.set("n", "<leader>/", require("fzf-lua").live_grep, { desc = "Live grep" })
 
 		-- LSP
-		map.set("n", "<leader>k", function()
-			vim.lsp.buf.hover()
-		end, { desc = "LSP hover documentation" })
+		map.set("n", "<leader>k", vim.lsp.buf.hover, { desc = "LSP hover documentation" })
 		map.set("n", "<leader>r", vim.lsp.buf.rename, { desc = "LSP rename" })
 		map.set("n", "gd", require("fzf-lua").lsp_definitions, { desc = "Goto definition" })
 		map.set("n", "gD", require("fzf-lua").lsp_declarations, { desc = "Goto declaration" })

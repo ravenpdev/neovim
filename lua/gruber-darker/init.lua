@@ -1,7 +1,3 @@
--- gruber-darker.nvim - A Neovim port of the Gruber Darker theme
--- Originally by Alexey Kutepov (rexim) and Jason R. Blevins for Emacs
--- Modified version of https://github.com/logannday/gruber-darker-nvim
-
 local M = {}
 
 -- Color palette
@@ -179,9 +175,6 @@ function M.setup(opts)
 		SpecialComment = { fg = colors.green },
 		Debug = { fg = colors.red },
 
-		Error = { fg = colors.red },
-		Todo = { fg = colors.aqua, bold = true },
-
 		-- TreeSitter
 		["@annotation"] = { fg = colors.quartz },
 		["@attribute"] = { fg = colors.quartz },
@@ -239,7 +232,6 @@ function M.setup(opts)
 		["@text.reference"] = { fg = colors.niagara, underline = true },
 		["@text.strong"] = { bold = true },
 		["@text.title"] = { fg = colors.niagara, bold = true },
-		["@text.todo"] = { fg = colors.aqua, bold = true },
 		["@text.underline"] = { underline = true },
 		["@text.uri"] = { fg = colors.niagara, underline = true },
 		["@text.warning"] = { fg = colors.yellow },
@@ -250,7 +242,7 @@ function M.setup(opts)
 		["@variable"] = { fg = colors.fg_1 },
 		["@variable.builtin"] = { fg = colors.yellow },
 
-		["@markup.raw"] = { fg = colors.fg_1, bg = colors.bg_1, bold = true },
+		["@markup.raw"] = { fg = colors.fg, bold = true },
 
 		-- LSP
 		LspReferenceText = { bg = colors.bg_1 },
@@ -264,15 +256,15 @@ function M.setup(opts)
 		-- Diagnostics
 		DiagnosticError = { fg = colors.red },
 		DiagnosticWarn = { fg = colors.yellow },
-		DiagnosticInfo = { fg = colors.quartz },
+		DiagnosticInfo = { fg = colors.aqua },
 		DiagnosticHint = { fg = colors.wisteria },
 		DiagnosticVirtualTextError = { fg = colors.red },
 		DiagnosticVirtualTextWarn = { fg = colors.yellow },
-		DiagnosticVirtualTextInfo = { fg = colors.quartz },
+		DiagnosticVirtualTextInfo = { fg = colors.aqua },
 		DiagnosticVirtualTextHint = { fg = colors.wisteria },
 		DiagnosticUnderlineError = { sp = colors.red, undercurl = true },
 		DiagnosticUnderlineWarn = { sp = colors.yellow, undercurl = true },
-		DiagnosticUnderlineInfo = { sp = colors.quartz, undercurl = true },
+		DiagnosticUnderlineInfo = { sp = colors.aqua, undercurl = true },
 		DiagnosticUnderlineHint = { sp = colors.wisteria, undercurl = true },
 
 		-- Git Signs
@@ -345,16 +337,16 @@ function M.setup(opts)
 		-- CmpItemMenu = { fg = colors.brown },
 
 		-- Hop
-		HopNextKey = { fg = colors.yellow, bold = true },
-		HopNextKey1 = { fg = colors.green, bold = true },
-		HopNextKey2 = { fg = colors.niagara },
-		HopUnmatched = { fg = colors.bg_4 },
+		-- HopNextKey = { fg = colors.yellow, bold = true },
+		-- HopNextKey1 = { fg = colors.green, bold = true },
+		-- HopNextKey2 = { fg = colors.niagara },
+		-- HopUnmatched = { fg = colors.bg_4 },
 
 		-- Leap
-		LeapMatch = { fg = colors.yellow, bold = true },
-		LeapLabelPrimary = { fg = colors.black, bg = colors.yellow, bold = true },
-		LeapLabelSecondary = { fg = colors.black, bg = colors.green, bold = true },
-		LeapBackdrop = { fg = colors.bg_4 },
+		-- LeapMatch = { fg = colors.yellow, bold = true },
+		-- LeapLabelPrimary = { fg = colors.black, bg = colors.yellow, bold = true },
+		-- LeapLabelSecondary = { fg = colors.black, bg = colors.green, bold = true },
+		-- LeapBackdrop = { fg = colors.bg_4 },
 
 		-- Dashboard
 		-- DashboardHeader = { fg = colors.niagara },
@@ -429,6 +421,7 @@ function M.setup(opts)
 		MiniStatuslineModeNormal = { bg = colors.bg_1 },
 		MiniStatuslineModeCommand = { bg = colors.bg_1 },
 		MiniStatuslineModeInsert = { bg = colors.bg_1 },
+		MiniStatuslineFilename = { bg = colors.bg, fg = colors.fg },
 	}
 
 	-- Apply highlights

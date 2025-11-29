@@ -2,11 +2,21 @@ return {
 	"stevearc/oil.nvim",
 	---@module 'oil'
 	---@type oil.SetupOpts
-	opts = {},
+	opts = {
+		columns = {
+			-- "icon",
+			-- "permissions",
+			-- "size",
+			-- "mtime",
+		},
+		view_options = {
+			show_hidden = true,
+		},
+	},
 	keys = {
 		{
 			"<leader>e",
-			"<CMD>Oil<CR>",
+			"<CMD>Oil --float<CR>",
 			desc = "Open file explorer",
 		},
 	},

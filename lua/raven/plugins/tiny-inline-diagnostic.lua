@@ -20,6 +20,16 @@ return {
 			},
 		}) -- Disable default virtual text
 
-		require("tiny-inline-diagnostic").setup()
+		require("tiny-inline-diagnostic").setup({
+			preset = "simple",
+			options = {
+				severity = {
+					vim.diagnostic.severity.ERROR,
+					vim.diagnostic.severity.WARN,
+					vim.diagnostic.severity.INFO,
+					vim.diagnostic.severity.HINT,
+				},
+			},
+		})
 	end,
 }

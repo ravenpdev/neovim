@@ -1,21 +1,29 @@
 return {
 	"AlexvZyl/nordic.nvim",
 	lazy = false,
-	priority = 1000,
 	enabled = false,
+	priority = 1000,
 	config = function()
 		require("nordic").setup({
 			-- This callback can be used to override the colors used in the base palette.
 			on_palette = function(palette) end,
 			-- This callback can be used to override the colors used in the extended palette.
 			after_palette = function(palette)
-				palette.bg = palette.bg_dark
-				palette.bg_visual = palette.grey1
+				local U = require("nordic.utils")
+				palette.bg_visual = U.blend(palette.gray5, palette.bg, 0.25)
 			end,
 			-- This callback can be used to override highlights before they are applied.
 			on_highlight = function(highlights, palette)
-				highlights.LineNr = { fg = palette.gray4 }
-				highlights.Comment = { fg = palette.gray5 }
+				highlights.LineNr = {
+					fg = palette.grey4,
+				}
+				highlights.Comment = {
+					fg = palette.grey5,
+				}
+
+				for _, highlight in pairs(highlights) do
+					highlight.italic = false
+				end
 			end,
 			-- Enable bold keywords.
 			bold_keywords = true,
@@ -66,38 +74,3 @@ return {
 		vim.cmd.colorscheme("nordic")
 	end,
 }
-
--- return {
--- 	"rose-pine/neovim",
--- 	name = "rose-pine",
--- 	config = function()
--- 		require("rose-pine").setup({
--- 			variant = "auto", -- auto, main, moon, or dawn
--- 			dark_variant = "main", -- main, moon, or dawn
--- 			dim_inactive_windows = false,
--- 			extend_background_behind_borders = true,
---
--- 			enable = {
--- 				terminal = true,
--- 				legacy_highlights = true, -- Improve compatibility for previous versions of Neovim
--- 				migrations = true, -- Handle deprecated options automatically
--- 			},
---
--- 			styles = {
--- 				bold = true,
--- 				italic = false,
--- 				transparency = false,
--- 			},
---
--- 			highlight_groups = {
--- 				Keyword = { bold = true },
--- 				Boolean = { bold = true },
--- 				-- StatusLine = { fg = "love", bg = "love", blend = 15 },
--- 				-- VertSplit = { fg = "muted", bg = "muted" },
--- 				-- Visual = { fg = "base", bg = "text", inherit = false },
--- 			},
--- 		})
---
--- 		vim.cmd("colorscheme rose-pine")
--- 	end,
--- }

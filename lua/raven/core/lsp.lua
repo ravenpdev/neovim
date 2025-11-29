@@ -19,73 +19,90 @@ vim.lsp.config("emmet_language_server", {
 	},
 })
 
--- local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
---
--- function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
--- 	opts = opts or {}
--- 	opts.border = "none"
--- 	opts.focusable = true
--- 	opts.wrap = true
---
--- 	-- Calculate appropriate width based on content
--- 	local max_line_length = 0
--- 	if type(contents) == "table" then
--- 		for _, line in ipairs(contents) do
--- 			max_line_length = math.max(max_line_length, vim.fn.strdisplaywidth(line))
--- 		end
--- 	elseif type(contents) == "string" then
--- 		for line in contents:gmatch("[^\n]*") do
--- 			max_line_length = math.max(max_line_length, vim.fn.strdisplaywidth(line))
--- 		end
--- 	end
---
--- 	-- Set width with padding, but cap at 80
--- 	local desired_width = math.min(max_line_length + 4, 80) -- +4 for your padding
--- 	opts.width = desired_width
---
--- 	-- Add padding by modifyig contents
--- 	if type(contents) == "table" then
--- 		local padded_contents = {}
--- 		table.insert(padded_contents, " ")
--- 		for _, line in ipairs(contents) do
--- 			table.insert(padded_contents, "  " .. line .. "  ")
--- 		end
--- 		table.insert(padded_contents, " ")
--- 		contents = padded_contents
--- 	elseif type(contents) == "string" then
--- 		contents = "  \n  " .. contents:gsub("\n", "\n  ") .. "  \n  "
--- 	end
---
--- 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
--- end
+vim.lsp.config("gopls", {
+	settings = {
+		gopls = {
+			gofumpt = true, -- use gofumpt instead of gofmt
+			staticcheck = true,
+			analyses = {
+				unusedparams = true,
+			},
+		},
+	},
+})
 
--- vim.api.nvim_create_autocmd({ "LspAttach" }, {
--- 	callback = function(args)
--- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
--- 		client.server_capabilities.semanticTokensProvider = nil
--- 	end,
--- })
+vim.lsp.config("rust_analyzer", {
+	settings = {
+		["rust-analyzer"] = {
+			checkOnSave = true,
+			check = {
+				command = "clippy",
+			},
+			inlayHints = {
+				bindingModeHints = {
+					enable = false,
+				},
+				chainingHints = {
+					enable = true,
+				},
+				closingBraceHints = {
+					minLines = 25,
+				},
+				closureReturnTypeHints = {
+					enable = "never",
+				},
+				lifetimeElisionHints = {
+					enable = "never",
+					useParameterNames = false,
+				},
+				maxLength = 25,
+				parameterHints = {
+					enable = true,
+				},
+				reborrowHints = {
+					enable = "never",
+				},
+				renderColons = true,
+				typeHints = {
+					enable = true,
+					hideClosureInitialization = false,
+					hideNamedConstructor = false,
+				},
+			},
+		},
+	},
+})
 
--- vim.diagnostic.config({
--- 	virtual_text = false,
--- 	underline = true,
--- 	update_in_insert = false,
--- 	severity_sort = true,
--- 	float = {
--- 		border = "rounded",
--- 		source = true,
--- 	},
--- 	signs = {
--- 		priority = 100,
--- 		text = {
--- 			[vim.diagnostic.severity.ERROR] = "● ",
--- 			[vim.diagnostic.severity.WARN] = "● ",
--- 			[vim.diagnostic.severity.INFO] = "● ",
--- 			[vim.diagnostic.severity.HINT] = "● ",
--- 		},
--- 		numhl = {
--- 			[vim.diagnostic.severity.ERROR] = "ErrorMsg",
--- 			[vim.diagnostic.severity.WARN] = "WarningMsg",
--- 		},
--- 	},
--- })
+-- Create a wrapper around the default hover
+local original_hover = vim.lsp.buf.hover
+
+vim.lsp.buf.hover = function()
+	-- Get active clients
+	local clients = vim.lsp.get_clients({ bufnr = 0 })
+	if #clients == 0 then
+		return
+	end
+
+	local params = vim.lsp.util.make_position_params(0, clients[1].offset_encoding)
+
+	vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result, ctx, config)
+		if err or not result or not result.contents then
+			return
+		end
+
+		local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+
+		-- Add padding
+		local padded_lines = {}
+		table.insert(padded_lines, " ")
+		for _, line in ipairs(markdown_lines) do
+			table.insert(padded_lines, "  " .. line .. "  ") -- Side padding
+		end
+		table.insert(padded_lines, " ") -- Bottom padding
+
+		local bufnr, winid = vim.lsp.util.open_floating_preview(padded_lines, "markdown", {
+			border = "none",
+			focusable = true,
+		})
+	end)
+end
