@@ -7,7 +7,7 @@ return {
 
 		require("mini.pairs").setup()
 
-		require("mini.snippets").setup()
+		-- require("mini.snippets").setup()
 
 		-- require("mini.files").setup()
 

@@ -1,108 +1,109 @@
-vim.lsp.config("emmet_language_server", {
-	filetypes = {
-		"astro",
-		"css",
-		"eruby",
-		"heex",
-		"html",
-		"htmlangular",
-		"htmldjango",
-		"javascriptreact",
-		"less",
-		"pug",
-		"sass",
-		"scss",
-		"svelte",
-		"templ",
-		"typescriptreact",
-		"vue",
-	},
-})
+-- vim.lsp.config("emmet_language_server", {
+-- 	filetypes = {
+-- 		"astro",
+-- 		"css",
+-- 		"eruby",
+-- 		"heex",
+-- 		"html",
+-- 		"htmlangular",
+-- 		"htmldjango",
+-- 		"javascriptreact",
+-- 		"less",
+-- 		"pug",
+-- 		"sass",
+-- 		"scss",
+-- 		"svelte",
+-- 		"templ",
+-- 		"typescriptreact",
+-- 		"vue",
+-- 	},
+-- })
 
-vim.lsp.config("gopls", {
-	settings = {
-		gopls = {
-			gofumpt = true, -- use gofumpt instead of gofmt
-			staticcheck = true,
-			analyses = {
-				unusedparams = true,
-			},
-		},
-	},
-})
+-- vim.lsp.config("gopls", {
+-- 	settings = {
+-- 		gopls = {
+-- 			gofumpt = true, -- use gofumpt instead of gofmt
+-- 			staticcheck = true,
+-- 			analyses = {
+-- 				unusedparams = true,
+-- 			},
+-- 		},
+-- 	},
+-- })
 
-vim.lsp.config("rust_analyzer", {
-	settings = {
-		["rust-analyzer"] = {
-			checkOnSave = true,
-			check = {
-				command = "clippy",
-			},
-			inlayHints = {
-				bindingModeHints = {
-					enable = false,
-				},
-				chainingHints = {
-					enable = true,
-				},
-				closingBraceHints = {
-					minLines = 25,
-				},
-				closureReturnTypeHints = {
-					enable = "never",
-				},
-				lifetimeElisionHints = {
-					enable = "never",
-					useParameterNames = false,
-				},
-				maxLength = 25,
-				parameterHints = {
-					enable = true,
-				},
-				reborrowHints = {
-					enable = "never",
-				},
-				renderColons = true,
-				typeHints = {
-					enable = true,
-					hideClosureInitialization = false,
-					hideNamedConstructor = false,
-				},
-			},
-		},
-	},
-})
+-- vim.lsp.config("zls", {
+-- 	cmd = { "/home/kristine/zls/zig-out/bin/zls" },
+-- })
 
--- Create a wrapper around the default hover
-local original_hover = vim.lsp.buf.hover
+-- vim.lsp.config("rust_analyzer", {
+-- 	settings = {
+-- 		["rust-analyzer"] = {
+-- 			checkOnSave = true,
+-- 			check = {
+-- 				command = "clippy",
+-- 			},
+-- 			inlayHints = {
+-- 				bindingModeHints = {
+-- 					enable = false,
+-- 				},
+-- 				chainingHints = {
+-- 					enable = true,
+-- 				},
+-- 				closingBraceHints = {
+-- 					minLines = 25,
+-- 				},
+-- 				closureReturnTypeHints = {
+-- 					enable = "never",
+-- 				},
+-- 				lifetimeElisionHints = {
+-- 					enable = "never",
+-- 					useParameterNames = false,
+-- 				},
+-- 				maxLength = 25,
+-- 				parameterHints = {
+-- 					enable = true,
+-- 				},
+-- 				reborrowHints = {
+-- 					enable = "never",
+-- 				},
+-- 				renderColons = true,
+-- 				typeHints = {
+-- 					enable = true,
+-- 					hideClosureInitialization = false,
+-- 					hideNamedConstructor = false,
+-- 				},
+-- 			},
+-- 		},
+-- 	},
+-- })
 
-vim.lsp.buf.hover = function()
-	-- Get active clients
-	local clients = vim.lsp.get_clients({ bufnr = 0 })
-	if #clients == 0 then
-		return
-	end
+-- vim.lsp.buf.hover = function()
+-- 	-- Get active clients
+-- 	local clients = vim.lsp.get_clients({ bufnr = 0 })
+-- 	if #clients == 0 then
+-- 		return
+-- 	end
 
-	local params = vim.lsp.util.make_position_params(0, clients[1].offset_encoding)
+-- 	local params = vim.lsp.util.make_position_params(0, clients[1].offset_encoding)
 
-	vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result, ctx, config)
-		if err or not result or not result.contents then
-			return
-		end
+-- 	vim.lsp.buf_request(0, "textDocument/hover", params, function(err, result, ctx, config)
+-- 		if err or not result or not result.contents then
+-- 			return
+-- 		end
 
-		local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+-- 		local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
 
-		-- Add padding
-		local padded_lines = {}
-		table.insert(padded_lines, " ")
-		for _, line in ipairs(markdown_lines) do
-			table.insert(padded_lines, "  " .. line .. "  ") -- Side padding
-		end
-		table.insert(padded_lines, " ") -- Bottom padding
+-- 		-- Add padding
+-- 		local padded_lines = {}
+-- 		table.insert(padded_lines, " ")
+-- 		for _, line in ipairs(markdown_lines) do
+-- 			table.insert(padded_lines, "  " .. line .. "  ") -- Side padding
+-- 		end
+-- 		table.insert(padded_lines, " ") -- Bottom padding
 
-		local bufnr, winid = vim.lsp.util.open_floating_preview(padded_lines, "markdown", {
-			border = "none",
-			focusable = true,
-		})
-	end)
-end
+-- 		local bufnr, winid = vim.lsp.util.open_floating_preview(padded_lines, "markdown", {
+-- 			border = "none",
+-- 			focusable = true,
+-- 		})
+-- 	end)
+-- end

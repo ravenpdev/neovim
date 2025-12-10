@@ -11,6 +11,7 @@ return {
 		},
 		win = {
 			border = "none",
+			padding = {1, 1},
 		},
 	},
 	keys = {

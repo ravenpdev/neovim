@@ -21,9 +21,9 @@ keymap.set("n", "N", "Nzzzv", { desc = "Previous search result (centered)" })
 keymap.set("x", "J", ":m '>+1<CR>gv-gv", { silent = true })
 keymap.set("x", "K", ":m '<-2<CR>gv-gv", { silent = true })
 
-keymap.set({ "n", "v", "o" }, "<leader>i", function()
-	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
-end, { desc = "Toggle inlay hints" })
+-- keymap.set({ "n", "v", "o" }, "<leader>i", function()
+-- 	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+-- end, { desc = "Toggle inlay hints" })
 
 keymap.del("n", "grr")
 keymap.del("n", "gra")
